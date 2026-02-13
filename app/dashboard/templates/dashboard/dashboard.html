@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>管理者ダッシュボード</title>
+    <style>
+        :root {
+            --bg: #f3f6fb;
+            --card: #ffffff;
+            --text: #1f2a37;
+            --subtext: #607086;
+            --line: #dfe7f2;
+            --primary: #2f80ed;
+            --good: #16a34a;
+            --warn: #d97706;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+            background: linear-gradient(180deg, #f9fbff 0%, var(--bg) 100%);
+            color: var(--text);
+        }
+        .page {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .title {
+            margin: 0;
+            font-size: clamp(26px, 2.6vw, 38px);
+            letter-spacing: 0.4px;
+        }
+        .sub {
+            margin: 4px 0 0;
+            color: var(--subtext);
+            font-size: 14px;
+        }
+        .logout-btn {
+            border: 1px solid #c7d2e4;
+            background: #ffffff;
+            color: #1f2937;
+            border-radius: 10px;
+            padding: 9px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 6px 14px rgba(22, 41, 73, 0.06);
+        }
+        .metric-label {
+            margin: 0;
+            color: var(--subtext);
+            font-size: 14px;
+        }
+        .metric-value {
+            margin: 6px 0 0;
+            font-size: clamp(28px, 3vw, 42px);
+            font-weight: 700;
+        }
+        .good {
+            color: var(--good);
+        }
+        .warn {
+            color: var(--warn);
+        }
+        .section {
+            margin-top: 14px;
+        }
+        .section-title {
+            margin: 0 0 10px;
+            font-size: 22px;
+        }
+        .table-wrap {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: auto;
+            box-shadow: 0 6px 14px rgba(22, 41, 73, 0.06);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px;
+        }
+        th, td {
+            border-bottom: 1px solid #e9eef6;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        th {
+            position: sticky;
+            top: 0;
+            background: #f7faff;
+            color: #3a4a61;
+            font-weight: 700;
+            z-index: 1;
+        }
+        tr:hover td {
+            background: #fbfdff;
+        }
+        .tags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 10px;
+        }
+        .tag-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--line);
+            background: var(--card);
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+        .tag-name {
+            color: #314155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .tag-count {
+            min-width: 28px;
+            text-align: center;
+            border-radius: 999px;
+            background: #eef4ff;
+            color: var(--primary);
+            font-weight: 700;
+            padding: 4px 8px;
+            font-size: 13px;
+        }
+        .post-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+        .post-item {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+        .post-meta {
+            margin: 0 0 6px;
+            color: var(--subtext);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .post-content {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        @media (max-width: 760px) {
+            .page {
+                padding: 14px 10px 20px;
+            }
+            .header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 19px;
+            }
+            .logout-btn {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div>
+                <h1 class="title">管理者ダッシュボード</h1>
+                <p class="sub">タイムアウト: {{ admin_timeout_minutes }} 分 / 権限レベル: {{ role_level }}</p>
+            </div>
+            <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button class="logout-btn" type="submit">ログアウト</button>
+            </form>
+        </header>
+
+        <section class="summary-grid">
+            <article class="card">
+                <p class="metric-label">肉体平均</p>
+                <p class="metric-value good">{{ avg_physical|default:"-" }}</p>
+            </article>
+            <article class="card">
+                <p class="metric-label">精神平均</p>
+                <p class="metric-value warn">{{ avg_mental|default:"-" }}</p>
+            </article>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">体調一覧</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>日付</th>
+                            <th>肉体</th>
+                            <th>精神</th>
+                            {% if role_level == 1 %}
+                                <th>氏名</th>
+                                <th>部署</th>
+                            {% else %}
+                                <th>部署</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in conditions %}
+                            <tr>
+                                <td>{{ row.condition.date }}</td>
+                                <td>{{ row.condition.physical|default:"-" }}</td>
+                                <td>{{ row.condition.mental|default:"-" }}</td>
+                                {% if role_level == 1 %}
+                                    <td>{{ row.profile.full_name|default:row.condition.user.username }}</td>
+                                    <td>{{ row.profile.department|default:"-" }}</td>
+                                {% else %}
+                                    <td>{{ row.profile.department|default:"-" }}</td>
+                                {% endif %}
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">データがありません。</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">ご意見箱 集計</h2>
+            <div class="tags-grid">
+                {% for tag, count in opinions.tag_counts.items %}
+                    <div class="tag-item">
+                        <span class="tag-name">{{ tag }}</span>
+                        <span class="tag-count">{{ count }}</span>
+                    </div>
+                {% empty %}
+                    <div class="tag-item">
+                        <span class="tag-name">データがありません</span>
+                        <span class="tag-count">0</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        {% if role_level == 2 %}
+            <section class="section">
+                <h3 class="section-title">投稿内容（管理者レベル2のみ）</h3>
+                <ul class="post-list">
+                    {% for item in opinions.items %}
+                        <li class="post-item">
+                            <p class="post-meta">{{ item.mode_label }} / {{ item.tag }}</p>
+                            <p class="post-content">{{ item.content }}</p>
+                        </li>
+                    {% empty %}
+                        <li class="post-item">
+                            <p class="post-content">投稿データがありません。</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+    </div>
+
+    <form id="admin-logout-form" method="post" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+    </form>
+    <script>
+        setTimeout(function () {
+            document.getElementById("admin-logout-form").submit();
+        }, {{ admin_timeout_minutes }} * 60 * 1000);
+    </script>
+</body>
+</html>

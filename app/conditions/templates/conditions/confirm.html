@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>入力確認</title>
+    {% load static %}
+    <style>
+        :root {
+            --bg1: #fff7fb;
+            --bg2: #eef8ff;
+            --card: #ffffff;
+            --text: #253041;
+            --muted: #5d6b81;
+            --line: #e0e8f7;
+            --primary: #3f86f4;
+            --primary-hover: #2f75e2;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            display: grid;
+            place-items: center;
+            font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(900px 460px at 0% 0%, #ffddea 0%, transparent 56%),
+                radial-gradient(900px 460px at 100% 100%, #dff2ff 0%, transparent 56%),
+                linear-gradient(135deg, var(--bg1), var(--bg2));
+            padding: 20px;
+        }
+        .card {
+            width: min(560px, 100%);
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 14px 28px rgba(38, 74, 131, 0.14);
+            padding: 20px 18px;
+        }
+        .title {
+            margin: 0 0 14px;
+            text-align: center;
+            font-size: clamp(30px, 4vw, 48px);
+            letter-spacing: 0.4px;
+        }
+        .list {
+            display: grid;
+            gap: 10px;
+            margin: 0 0 18px;
+        }
+        .item {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px 12px;
+            background: #fbfdff;
+        }
+        .label {
+            margin: 0 0 4px;
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+        .value {
+            margin: 0;
+            font-size: clamp(22px, 3vw, 34px);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .value-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .score-icon {
+            width: clamp(36px, 4.4vw, 56px);
+            height: clamp(36px, 4.4vw, 56px);
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .actions {
+            text-align: center;
+        }
+        .submit {
+            border: 0;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #fff;
+            font-size: clamp(18px, 2.6vw, 26px);
+            font-weight: 700;
+            padding: 10px 24px;
+            cursor: pointer;
+        }
+        .submit:hover {
+            background: var(--primary-hover);
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <h1 class="title">入力確認</h1>
+
+        <section class="list">
+            <article class="item">
+                <p class="label">肉体スコア</p>
+                <div class="value-row">
+                    {% if form.cleaned_data.physical == 1 %}
+                        <img class="score-icon" src="{% static 'img/conditions/physical_1.png' %}" alt="体調1">
+                    {% elif form.cleaned_data.physical == 2 %}
+                        <img class="score-icon" src="{% static 'img/conditions/physical_2.png' %}" alt="体調2">
+                    {% elif form.cleaned_data.physical == 3 %}
+                        <img class="score-icon" src="{% static 'img/conditions/physical_3.png' %}" alt="体調3">
+                    {% elif form.cleaned_data.physical == 4 %}
+                        <img class="score-icon" src="{% static 'img/conditions/physical_4.png' %}" alt="体調4">
+                    {% elif form.cleaned_data.physical == 5 %}
+                        <img class="score-icon" src="{% static 'img/conditions/physical_5.png' %}" alt="体調5">
+                    {% endif %}
+                    <p class="value">{{ form.cleaned_data.physical|default:"-" }}</p>
+                </div>
+            </article>
+            <article class="item">
+                <p class="label">精神スコア</p>
+                <div class="value-row">
+                    {% if form.cleaned_data.mental == 1 %}
+                        <img class="score-icon" src="{% static 'img/conditions/mental_1.png' %}" alt="メンタル1">
+                    {% elif form.cleaned_data.mental == 2 %}
+                        <img class="score-icon" src="{% static 'img/conditions/mental_2.png' %}" alt="メンタル2">
+                    {% elif form.cleaned_data.mental == 3 %}
+                        <img class="score-icon" src="{% static 'img/conditions/mental_3.png' %}" alt="メンタル3">
+                    {% elif form.cleaned_data.mental == 4 %}
+                        <img class="score-icon" src="{% static 'img/conditions/mental_4.png' %}" alt="メンタル4">
+                    {% elif form.cleaned_data.mental == 5 %}
+                        <img class="score-icon" src="{% static 'img/conditions/mental_5.png' %}" alt="メンタル5">
+                    {% endif %}
+                    <p class="value">{{ form.cleaned_data.mental|default:"-" }}</p>
+                </div>
+            </article>
+            <article class="item">
+                <p class="label">休み</p>
+                <p class="value">{{ form.cleaned_data.is_absent|yesno:"はい,いいえ" }}</p>
+            </article>
+        </section>
+
+        <form method="post" action="{% url 'conditions:submit' %}" class="actions">
+            {% csrf_token %}
+            <input type="hidden" name="physical" value="{{ form.cleaned_data.physical }}">
+            <input type="hidden" name="mental" value="{{ form.cleaned_data.mental }}">
+            <input type="hidden" name="is_absent" value="{% if form.cleaned_data.is_absent %}on{% endif %}">
+            <button type="submit" class="submit">確定</button>
+        </form>
+    </main>
+</body>
+</html>

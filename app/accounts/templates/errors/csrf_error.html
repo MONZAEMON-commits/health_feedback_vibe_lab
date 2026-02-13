@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>セッションエラー</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            display: grid;
+            place-items: center;
+            font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+            background: #f6f8fc;
+            color: #1f2b3a;
+            padding: 16px;
+        }
+        .card {
+            width: min(560px, 100%);
+            background: #fff;
+            border: 1px solid #dfe8f7;
+            border-radius: 14px;
+            padding: 20px 18px;
+            box-shadow: 0 10px 20px rgba(40, 70, 120, 0.08);
+        }
+        h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+        p {
+            margin: 0 0 12px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        .reason {
+            font-size: 13px;
+            color: #5a6a80;
+            background: #f2f6fd;
+            border: 1px solid #d9e4f8;
+            border-radius: 10px;
+            padding: 8px 10px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 8px;
+            text-decoration: none;
+            color: #fff;
+            background: #3f86f4;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <h1>セッションが切れました</h1>
+        <p>もう一度ログイン画面から操作をやり直してください。</p>
+        {% if reason %}
+            <p class="reason">{{ reason }}</p>
+        {% endif %}
+        <a href="/login/">ログイン画面へ戻る</a>
+    </main>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>ログアウト</title>
+</head>
+<body>
+    <h1>ログアウト</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">ログアウト</button>
+    </form>
+</body>
+</html>
