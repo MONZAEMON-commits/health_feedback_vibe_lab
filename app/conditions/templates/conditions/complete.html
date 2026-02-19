@@ -85,18 +85,11 @@
         <p class="emoji">🌸</p>
         <h1 class="title">入力完了</h1>
         <p class="message">体調入力を登録しました。</p>
-        <p class="note">この画面は <span id="countdown" class="count">60</span> 秒後に自動でログアウトします。</p>
-        <form method="post" action="{% url 'accounts:logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="btn">今すぐログアウト</button>
-        </form>
+        <p class="note">この画面は <span id="countdown" class="count">10</span> 秒後に自動でログアウトします。</p>
+        <a class="btn" href="{% url 'accounts:logout' %}">すぐにログアウト</a>
     </main>
-
-    <form id="auto-logout-form" method="post" action="{% url 'accounts:logout' %}">
-        {% csrf_token %}
-    </form>
-    <script>
-        var left = 60;
+<script>
+        var left = 10;
         var node = document.getElementById("countdown");
         var timer = setInterval(function () {
             left -= 1;
@@ -108,8 +101,8 @@
         }, 1000);
 
         setTimeout(function () {
-            document.getElementById("auto-logout-form").submit();
-        }, 60000);
+            window.location.href = "{% url 'accounts:logout' %}";
+        }, 10000);
     </script>
 </body>
 </html>

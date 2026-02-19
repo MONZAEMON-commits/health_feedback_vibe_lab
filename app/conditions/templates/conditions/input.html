@@ -7,8 +7,8 @@
     {% load static %}
     <style>
         :root {
-            --bg: #ffffff;
-            --text: #111111;
+            --bg: #fff7eb;
+            --text: #4a3a2a;
             --blue: #2b5da8;
             --cyan: #26aac6;
             --green: #49a934;
@@ -18,7 +18,10 @@
         body {
             margin: 0;
             min-height: 100dvh;
-            background: var(--bg);
+            background:
+                radial-gradient(900px 420px at 0% -10%, #fff3de 0%, transparent 60%),
+                radial-gradient(900px 420px at 100% 100%, #f3dfc1 0%, transparent 55%),
+                var(--bg);
             color: var(--text);
             font-family: "Yu Gothic UI", "Meiryo", sans-serif;
         }
@@ -58,9 +61,13 @@
             padding: 6px 8px;
             border-radius: 10px;
         }
+        .score-label.is-disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
         .score input[type="radio"]:checked + .score-label {
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 0 2px #333333 inset;
+            background: rgba(255, 250, 242, 0.96);
+            box-shadow: 0 0 0 2px #8a6a45 inset;
         }
         .icon-img {
             width: clamp(58px, 5.6vw, 86px);
@@ -115,7 +122,7 @@
             display: inline-block;
             padding: 12px 22px;
             border-radius: 12px;
-            background: #1f7be4;
+            background: #c77945;
             color: #ffffff;
             text-decoration: none;
             font-size: clamp(18px, 1.8vw, 28px);
@@ -129,9 +136,9 @@
             margin: 0;
         }
         .logout-btn {
-            border: 1px solid #c9c9c9;
-            background: #ffffff;
-            color: #222222;
+            border: 1px solid #d8bf9c;
+            background: #fffaf1;
+            color: #5a4632;
             border-radius: 8px;
             padding: 8px 14px;
             font-size: 16px;
@@ -249,11 +256,8 @@
         </div>
     </form>
     </div>
-    <form class="logout-form" method="post" action="{% url 'accounts:logout' %}">
-        {% csrf_token %}
-        <button class="logout-btn" type="submit">ログアウト</button>
-    </form>
-    <a class="opinion-btn" href="http://127.0.0.1:8080/index.php?id={{ request.user.id }}">ご意見箱</a>
+    <a class="logout-form logout-btn" href="{% url 'accounts:logout' %}">ログアウト</a>
+    <a class="opinion-btn" href="http://127.0.0.1:8080/index.php?id={{ request.user.id }}&return_to={{ request.scheme|add:'://'|add:request.get_host|add:'/login/'|urlencode }}">ご意見箱</a>
     <script src="{% static 'js/conditions_input.js' %}"></script>
 </body>
 </html>

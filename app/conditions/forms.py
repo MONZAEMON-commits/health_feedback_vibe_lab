@@ -1,4 +1,4 @@
-from django import forms
+﻿from django import forms
 from django.utils import timezone
 
 from .models import Condition
@@ -31,11 +31,12 @@ class ConditionInputForm(forms.Form):
         mental = cleaned.get("mental")
 
         if is_absent:
-            if physical is not None or mental is not None:
-                raise forms.ValidationError("休みの場合はスコアを入力できません。")
+            # 休みを優先。誤って選択済みのスコアはサーバー側で無視する。
+            cleaned["physical"] = None
+            cleaned["mental"] = None
         else:
             if physical is None or mental is None:
-                raise forms.ValidationError("休みでない場合はスコアの入力が必要です。")
+                raise forms.ValidationError("休みでない場合は、肉体とメンタルのスコア入力が必要です。")
 
         if self.user and Condition.objects.filter(user=self.user, date=timezone.localdate()).exists():
             raise forms.ValidationError("本日は既に入力済みです。")

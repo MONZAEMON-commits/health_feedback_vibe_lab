@@ -27,7 +27,7 @@ def login_view(request):
 
 @login_required
 def logout_view(request):
-    if request.method == "POST":
+    if request.method in ("POST", "GET"):
         logout(request)
         return redirect("accounts:login")
     return render(request, "accounts/logout.html")

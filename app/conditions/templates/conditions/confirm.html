@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="utf-8">
@@ -16,9 +16,7 @@
             --primary: #3f86f4;
             --primary-hover: #2f75e2;
         }
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         body {
             margin: 0;
             min-height: 100dvh;
@@ -46,11 +44,7 @@
             font-size: clamp(30px, 4vw, 48px);
             letter-spacing: 0.4px;
         }
-        .list {
-            display: grid;
-            gap: 10px;
-            margin: 0 0 18px;
-        }
+        .list { display: grid; gap: 10px; margin: 0 0 18px; }
         .item {
             border: 1px solid var(--line);
             border-radius: 12px;
@@ -69,11 +63,7 @@
             font-weight: 700;
             line-height: 1.2;
         }
-        .value-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .value-row { display: flex; align-items: center; gap: 10px; }
         .score-icon {
             width: clamp(36px, 4.4vw, 56px);
             height: clamp(36px, 4.4vw, 56px);
@@ -81,7 +71,10 @@
             flex-shrink: 0;
         }
         .actions {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         .submit {
             border: 0;
@@ -93,9 +86,19 @@
             padding: 10px 24px;
             cursor: pointer;
         }
-        .submit:hover {
-            background: var(--primary-hover);
+        .submit:hover { background: var(--primary-hover); }
+        .cancel {
+            display: inline-block;
+            text-decoration: none;
+            border: 1px solid #c8d6ef;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #32445f;
+            font-size: clamp(18px, 2.6vw, 26px);
+            font-weight: 700;
+            padding: 10px 24px;
         }
+        .cancel:hover { background: #f4f8ff; }
     </style>
 </head>
 <body>
@@ -120,6 +123,7 @@
                     <p class="value">{{ form.cleaned_data.physical|default:"-" }}</p>
                 </div>
             </article>
+
             <article class="item">
                 <p class="label">精神スコア</p>
                 <div class="value-row">
@@ -137,6 +141,7 @@
                     <p class="value">{{ form.cleaned_data.mental|default:"-" }}</p>
                 </div>
             </article>
+
             <article class="item">
                 <p class="label">休み</p>
                 <p class="value">{{ form.cleaned_data.is_absent|yesno:"はい,いいえ" }}</p>
@@ -148,6 +153,7 @@
             <input type="hidden" name="physical" value="{{ form.cleaned_data.physical }}">
             <input type="hidden" name="mental" value="{{ form.cleaned_data.mental }}">
             <input type="hidden" name="is_absent" value="{% if form.cleaned_data.is_absent %}on{% endif %}">
+            <a href="{% url 'conditions:input' %}" class="cancel">キャンセル</a>
             <button type="submit" class="submit">確定</button>
         </form>
     </main>

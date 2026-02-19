@@ -3,50 +3,32 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>管理者ダッシュボード</title>
+    <title>管理ダッシュボード</title>
     <style>
         :root {
-            --bg: #f3f6fb;
-            --card: #ffffff;
-            --text: #1f2a37;
-            --subtext: #607086;
-            --line: #dfe7f2;
-            --primary: #2f80ed;
+            --bg: #f7efe2;
+            --card: #fffaf2;
+            --text: #4d3b2a;
+            --subtext: #7e6750;
+            --line: #e8d8c2;
+            --primary: #c97845;
             --good: #16a34a;
-            --warn: #d97706;
+            --warn: #c66d1f;
         }
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         body {
             margin: 0;
             font-family: "Yu Gothic UI", "Meiryo", sans-serif;
-            background: linear-gradient(180deg, #f9fbff 0%, var(--bg) 100%);
+            background: linear-gradient(180deg, #fff8ee 0%, var(--bg) 100%);
             color: var(--text);
         }
-        .page {
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 24px 16px 40px;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .title {
-            margin: 0;
-            font-size: clamp(26px, 2.6vw, 38px);
-            letter-spacing: 0.4px;
-        }
-        .sub {
-            margin: 4px 0 0;
-            color: var(--subtext);
-            font-size: 14px;
-        }
+        .page { max-width: 1180px; margin: 0 auto; padding: 24px 16px 40px; }
+        .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+        .title { margin: 0; font-size: clamp(26px, 2.6vw, 38px); letter-spacing: 0.4px; }
+        .sub { margin: 4px 0 0; color: var(--subtext); font-size: 14px; }
         .logout-btn {
+            display: inline-block;
+            text-decoration: none;
             border: 1px solid #c7d2e4;
             background: #ffffff;
             color: #1f2937;
@@ -54,14 +36,8 @@
             padding: 9px 14px;
             font-size: 14px;
             font-weight: 600;
-            cursor: pointer;
         }
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin-bottom: 14px;
-        }
+        .summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
         .card {
             background: var(--card);
             border: 1px solid var(--line);
@@ -69,29 +45,12 @@
             padding: 14px;
             box-shadow: 0 6px 14px rgba(22, 41, 73, 0.06);
         }
-        .metric-label {
-            margin: 0;
-            color: var(--subtext);
-            font-size: 14px;
-        }
-        .metric-value {
-            margin: 6px 0 0;
-            font-size: clamp(28px, 3vw, 42px);
-            font-weight: 700;
-        }
-        .good {
-            color: var(--good);
-        }
-        .warn {
-            color: var(--warn);
-        }
-        .section {
-            margin-top: 14px;
-        }
-        .section-title {
-            margin: 0 0 10px;
-            font-size: 22px;
-        }
+        .metric-label { margin: 0; color: var(--subtext); font-size: 14px; }
+        .metric-value { margin: 6px 0 0; font-size: clamp(28px, 3vw, 42px); font-weight: 700; }
+        .good { color: var(--good); }
+        .warn { color: var(--warn); }
+        .section { margin-top: 14px; }
+        .section-title { margin: 0 0 10px; font-size: 22px; }
         .table-wrap {
             background: var(--card);
             border: 1px solid var(--line);
@@ -99,102 +58,103 @@
             overflow: auto;
             box-shadow: 0 6px 14px rgba(22, 41, 73, 0.06);
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 680px;
-        }
-        th, td {
-            border-bottom: 1px solid #e9eef6;
-            padding: 10px 12px;
-            text-align: left;
-            font-size: 14px;
-            vertical-align: top;
-        }
-        th {
-            position: sticky;
-            top: 0;
-            background: #f7faff;
-            color: #3a4a61;
-            font-weight: 700;
-            z-index: 1;
-        }
-        tr:hover td {
-            background: #fbfdff;
-        }
-        .tags-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 10px;
-        }
-        .tag-item {
+        .pager {
+            margin-top: 10px;
             display: flex;
-            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
             align-items: center;
-            border: 1px solid var(--line);
-            background: var(--card);
-            border-radius: 12px;
-            padding: 10px 12px;
         }
-        .tag-name {
-            color: #314155;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .tag-count {
-            min-width: 28px;
-            text-align: center;
-            border-radius: 999px;
-            background: #eef4ff;
-            color: var(--primary);
-            font-weight: 700;
-            padding: 4px 8px;
+        .pager-btn {
+            display: inline-block;
+            text-decoration: none;
+            border: 1px solid #c7d2e4;
+            background: #ffffff;
+            color: #1f2937;
+            border-radius: 8px;
+            padding: 6px 10px;
             font-size: 13px;
-        }
-        .post-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: grid;
-            gap: 10px;
-        }
-        .post-item {
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            padding: 10px 12px;
-        }
-        .post-meta {
-            margin: 0 0 6px;
-            color: var(--subtext);
-            font-size: 12px;
             font-weight: 600;
         }
-        .post-content {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.45;
-            white-space: pre-wrap;
-            word-break: break-word;
+        .pager-btn.is-current {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
         }
+        .view-switch {
+            display: inline-flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            background: #f4e9db;
+            border: 1px solid #e2ccb0;
+            border-radius: 12px;
+            padding: 4px;
+        }
+        .view-btn {
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: #6b5139;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .view-btn.is-active { background: #ffffff; box-shadow: 0 2px 8px rgba(27, 66, 127, 0.14); color: var(--primary); }
+        .panel { display: none; }
+        .panel.is-active { display: block; }
+        .chart-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 6px 14px rgba(22, 41, 73, 0.06);
+        }
+        .graph-scope {
+            display: inline-flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            background: #f4e9db;
+            border: 1px solid #e2ccb0;
+            border-radius: 12px;
+            padding: 4px;
+        }
+        .scope-btn {
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: #6b5139;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .scope-btn.is-active {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(27, 66, 127, 0.14);
+            color: var(--primary);
+        }
+        .chart-wrap { width: 100%; overflow: auto; }
+        .chart-canvas { width: 100%; min-height: 320px; display: block; }
+        .chart-note { margin: 8px 0 0; font-size: 12px; color: var(--subtext); }
+        table { width: 100%; border-collapse: collapse; min-width: 680px; }
+        th, td { border-bottom: 1px solid #e9eef6; padding: 10px 12px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { position: sticky; top: 0; background: #fbf2e6; color: #5d4a36; font-weight: 700; z-index: 1; }
+        tr:hover td { background: #fff4e8; }
+        .tags-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+        .tag-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 10px 12px; }
+        .tag-name { color: #314155; font-size: 14px; font-weight: 600; }
+        .tag-count { min-width: 28px; text-align: center; border-radius: 999px; background: #f5e9dd; color: var(--primary); font-weight: 700; padding: 4px 8px; font-size: 13px; }
+        .post-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+        .post-item { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+        .post-meta { margin: 0 0 6px; color: var(--subtext); font-size: 12px; font-weight: 600; }
+        .post-content { margin: 0; font-size: 14px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
         @media (max-width: 760px) {
-            .page {
-                padding: 14px 10px 20px;
-            }
-            .header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-            .summary-grid {
-                grid-template-columns: 1fr;
-            }
-            .section-title {
-                font-size: 19px;
-            }
-            .logout-btn {
-                font-size: 13px;
-                padding: 8px 12px;
-            }
+            .page { padding: 14px 10px 20px; }
+            .header { align-items: flex-start; flex-direction: column; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 19px; }
+            .logout-btn { font-size: 13px; padding: 8px 12px; }
         }
     </style>
 </head>
@@ -202,63 +162,100 @@
     <div class="page">
         <header class="header">
             <div>
-                <h1 class="title">管理者ダッシュボード</h1>
-                <p class="sub">タイムアウト: {{ admin_timeout_minutes }} 分 / 権限レベル: {{ role_level }}</p>
+                <h1 class="title">管理ダッシュボード</h1>
+                <p class="sub">タイムアウト: {{ admin_timeout_minutes }}分 / 権限レベル: {{ role_level }}</p>
             </div>
-            <form method="post" action="{% url 'accounts:logout' %}">
-                {% csrf_token %}
-                <button class="logout-btn" type="submit">ログアウト</button>
-            </form>
+            <a class="logout-btn" href="{% url 'accounts:logout' %}">ログアウト</a>
         </header>
 
         <section class="summary-grid">
             <article class="card">
                 <p class="metric-label">肉体平均</p>
-                <p class="metric-value good">{{ avg_physical|default:"-" }}</p>
+                <p class="metric-value good">{{ avg_physical|floatformat:2|default:"-" }}</p>
             </article>
             <article class="card">
                 <p class="metric-label">精神平均</p>
-                <p class="metric-value warn">{{ avg_mental|default:"-" }}</p>
+                <p class="metric-value warn">{{ avg_mental|floatformat:2|default:"-" }}</p>
             </article>
         </section>
 
         <section class="section">
             <h2 class="section-title">体調一覧</h2>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>日付</th>
-                            <th>肉体</th>
-                            <th>精神</th>
-                            {% if role_level == 1 %}
-                                <th>氏名</th>
-                                <th>部署</th>
-                            {% else %}
-                                <th>部署</th>
-                            {% endif %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in conditions %}
+            <div class="view-switch" role="tablist" aria-label="体調一覧表示切替">
+                <button id="btn-table" class="view-btn is-active" type="button">表</button>
+                <button id="btn-graph" class="view-btn" type="button">グラフ</button>
+            </div>
+
+            <div id="panel-table" class="panel is-active">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
                             <tr>
-                                <td>{{ row.condition.date }}</td>
-                                <td>{{ row.condition.physical|default:"-" }}</td>
-                                <td>{{ row.condition.mental|default:"-" }}</td>
+                                <th>日付</th>
+                                <th>肉体</th>
+                                <th>精神</th>
                                 {% if role_level == 1 %}
-                                    <td>{{ row.profile.full_name|default:row.condition.user.username }}</td>
-                                    <td>{{ row.profile.department|default:"-" }}</td>
+                                    <th>氏名</th>
+                                    <th>部署</th>
                                 {% else %}
-                                    <td>{{ row.profile.department|default:"-" }}</td>
+                                    <th>部署</th>
                                 {% endif %}
                             </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="5">データがありません。</td>
-                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in conditions_page %}
+                                <tr>
+                                    <td>{{ row.condition.date }}</td>
+                                    <td>{{ row.condition.physical|default:"-" }}</td>
+                                    <td>{{ row.condition.mental|default:"-" }}</td>
+                                    {% if role_level == 1 %}
+                                        <td>{{ row.profile.full_name|default:row.condition.user.username }}</td>
+                                        <td>{{ row.profile.department|default:"-" }}</td>
+                                    {% else %}
+                                        <td>{{ row.profile.department|default:"-" }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5">データがありません。</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if conditions_page.paginator.num_pages > 1 %}
+                    <nav class="pager" aria-label="ページ切替">
+                        {% if conditions_page.has_previous %}
+                            <a class="pager-btn" href="?page={{ conditions_page.previous_page_number }}">前へ</a>
+                        {% endif %}
+                        {% for token in conditions_page_tokens %}
+                            {% if token == "..." %}
+                                <span class="pager-btn">...</span>
+                            {% elif token == conditions_page.number %}
+                                <span class="pager-btn is-current">{{ token }}</span>
+                            {% else %}
+                                <a class="pager-btn" href="?page={{ token }}">{{ token }}</a>
+                            {% endif %}
                         {% endfor %}
-                    </tbody>
-                </table>
+                        {% if conditions_page.has_next %}
+                            <a class="pager-btn" href="?page={{ conditions_page.next_page_number }}">次へ</a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
+            </div>
+
+            <div id="panel-graph" class="panel">
+                <div class="chart-card">
+                    <div class="graph-scope" role="tablist" aria-label="graph scope">
+                        <button id="scope-all" class="scope-btn is-active" type="button">全体</button>
+                        <button id="scope-dept-a" class="scope-btn" type="button">部署A</button>
+                        <button id="scope-dept-b" class="scope-btn" type="button">部署B</button>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="dept-chart" class="chart-canvas" width="980" height="360"></canvas>
+                    </div>
+                    <p class="chart-note">日付ごとの平均スコア推移（肉体/精神）を表示しています。</p>
+                </div>
             </div>
         </section>
 
@@ -280,10 +277,10 @@
         </section>
 
         {% if role_level == 2 %}
-            <section class="section">
-                <h3 class="section-title">投稿内容（管理者レベル2のみ）</h3>
+            <section id="opinions" class="section">
+                <h3 class="section-title">投稿内容（権限レベル2のみ）</h3>
                 <ul class="post-list">
-                    {% for item in opinions.items %}
+                    {% for item in opinions_page %}
                         <li class="post-item">
                             <p class="post-meta">{{ item.mode_label }} / {{ item.tag }}</p>
                             <p class="post-content">{{ item.content }}</p>
@@ -294,17 +291,178 @@
                         </li>
                     {% endfor %}
                 </ul>
+                {% if opinions_page.paginator.num_pages > 1 %}
+                    <nav class="pager" aria-label="投稿内容ページ切替">
+                        {% if opinions_page.has_previous %}
+                            <a class="pager-btn" href="?page={{ conditions_page.number }}&opinion_page={{ opinions_page.previous_page_number }}#opinions">前へ</a>
+                        {% endif %}
+                        {% for n in opinions_page.paginator.page_range %}
+                            {% if n == opinions_page.number %}
+                                <span class="pager-btn is-current">{{ n }}</span>
+                            {% else %}
+                                <a class="pager-btn" href="?page={{ conditions_page.number }}&opinion_page={{ n }}#opinions">{{ n }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if opinions_page.has_next %}
+                            <a class="pager-btn" href="?page={{ conditions_page.number }}&opinion_page={{ opinions_page.next_page_number }}#opinions">次へ</a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
             </section>
         {% endif %}
     </div>
 
-    <form id="admin-logout-form" method="post" action="{% url 'accounts:logout' %}">
-        {% csrf_token %}
-    </form>
+    {{ graph_data|json_script:"graph-data" }}
+    {{ graph_data_dept_a|json_script:"graph-data-dept-a" }}
+    {{ graph_data_dept_b|json_script:"graph-data-dept-b" }}
     <script>
+        (function () {
+            const btnTable = document.getElementById("btn-table");
+            const btnGraph = document.getElementById("btn-graph");
+            const panelTable = document.getElementById("panel-table");
+            const panelGraph = document.getElementById("panel-graph");
+            const scopeAll = document.getElementById("scope-all");
+            const scopeDeptA = document.getElementById("scope-dept-a");
+            const scopeDeptB = document.getElementById("scope-dept-b");
+            const graphDataMap = {
+                all: JSON.parse(document.getElementById("graph-data").textContent || "[]"),
+                deptA: JSON.parse(document.getElementById("graph-data-dept-a").textContent || "[]"),
+                deptB: JSON.parse(document.getElementById("graph-data-dept-b").textContent || "[]")
+            };
+            let currentScope = "all";
+
+            function switchPanel(mode) {
+                const showTable = mode === "table";
+                panelTable.classList.toggle("is-active", showTable);
+                panelGraph.classList.toggle("is-active", !showTable);
+                btnTable.classList.toggle("is-active", showTable);
+                btnGraph.classList.toggle("is-active", !showTable);
+                if (!showTable) {
+                    drawChart(graphDataMap[currentScope]);
+                }
+            }
+
+            btnTable.addEventListener("click", function () { switchPanel("table"); });
+            btnGraph.addEventListener("click", function () { switchPanel("graph"); });
+
+            function switchScope(scopeKey) {
+                currentScope = scopeKey;
+                scopeAll.classList.toggle("is-active", scopeKey === "all");
+                scopeDeptA.classList.toggle("is-active", scopeKey === "deptA");
+                scopeDeptB.classList.toggle("is-active", scopeKey === "deptB");
+                drawChart(graphDataMap[scopeKey]);
+            }
+
+            scopeAll.addEventListener("click", function () { switchScope("all"); });
+            scopeDeptA.addEventListener("click", function () { switchScope("deptA"); });
+            scopeDeptB.addEventListener("click", function () { switchScope("deptB"); });
+
+            function drawChart(rows) {
+                const canvas = document.getElementById("dept-chart");
+                if (!canvas) return;
+                const ctx = canvas.getContext("2d");
+                if (!ctx) return;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (!rows || rows.length === 0) {
+                    ctx.fillStyle = "#2f405b";
+                    ctx.font = "14px 'Yu Gothic UI','Meiryo',sans-serif";
+                    ctx.fillText("グラフ表示用データがありません。", 24, 36);
+                    return;
+                }
+
+                const left = 56;
+                const top = 20;
+                const right = 18;
+                const bottom = 54;
+                const chartW = canvas.width - left - right;
+                const chartH = canvas.height - top - bottom;
+                const maxScore = 5.0;
+
+                ctx.strokeStyle = "#cfd9ea";
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 5; i++) {
+                    const y = top + (chartH / 5) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(left, y);
+                    ctx.lineTo(left + chartW, y);
+                    ctx.stroke();
+                    const label = String((maxScore - i).toFixed(1));
+                    ctx.fillStyle = "#607086";
+                    ctx.font = "12px 'Yu Gothic UI','Meiryo',sans-serif";
+                    ctx.fillText(label, 20, y + 4);
+                }
+
+                function yFromScore(score) {
+                    return top + chartH - (Number(score || 0) / maxScore) * chartH;
+                }
+                function xFromIndex(i) {
+                    if (rows.length === 1) return left + chartW / 2;
+                    return left + (chartW / (rows.length - 1)) * i;
+                }
+
+                ctx.fillStyle = "#1f2a37";
+                ctx.font = "12px 'Yu Gothic UI','Meiryo',sans-serif";
+                rows.forEach(function (row, idx) {
+                    const x = xFromIndex(idx);
+                    const label = row.date || "";
+                    const shortLabel = label.length >= 10 ? label.slice(5) : label;
+                    ctx.fillText(shortLabel, x - 18, top + chartH + 18);
+                });
+
+                ctx.strokeStyle = "#2f80ed";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                rows.forEach(function (row, idx) {
+                    const x = xFromIndex(idx);
+                    const y = yFromScore(row.physical_avg);
+                    if (idx === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                ctx.strokeStyle = "#f2994a";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                rows.forEach(function (row, idx) {
+                    const x = xFromIndex(idx);
+                    const y = yFromScore(row.mental_avg);
+                    if (idx === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                rows.forEach(function (row, idx) {
+                    const x = xFromIndex(idx);
+                    const py = yFromScore(row.physical_avg);
+                    const my = yFromScore(row.mental_avg);
+
+                    ctx.fillStyle = "#2f80ed";
+                    ctx.beginPath();
+                    ctx.arc(x, py, 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = "#f2994a";
+                    ctx.beginPath();
+                    ctx.arc(x, my, 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                ctx.fillStyle = "#2f80ed";
+                ctx.fillRect(left, canvas.height - 18, 14, 8);
+                ctx.fillStyle = "#2f405b";
+                ctx.fillText("肉体平均", left + 20, canvas.height - 10);
+                ctx.fillStyle = "#f2994a";
+                ctx.fillRect(left + 110, canvas.height - 18, 14, 8);
+                ctx.fillStyle = "#2f405b";
+                ctx.fillText("精神平均", left + 130, canvas.height - 10);
+            }
+        })();
+
         setTimeout(function () {
-            document.getElementById("admin-logout-form").submit();
-        }, {{ admin_timeout_minutes }} * 60 * 1000);
+            window.location.href = "{% url 'accounts:logout' %}";
+        }, {{ admin_timeout_minutes|default:5 }} * 60 * 1000);
     </script>
 </body>
 </html>

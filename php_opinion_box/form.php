@@ -5,6 +5,7 @@ if (!isset($_POST['employee_id'], $_POST['mode'])) {
 }
 $employee_id = $_POST['employee_id'];
 $mode = $_POST['mode'];
+$return_to = isset($_POST['return_to']) ? $_POST['return_to'] : ('http://' . $_SERVER['HTTP_HOST'] . '/login/');
 $content = isset($_POST['content']) ? $_POST['content'] : '';
 $tag = isset($_POST['tag']) ? $_POST['tag'] : '';
 $valid_modes = ['anonymous', 'semi', 'signed'];
@@ -29,6 +30,7 @@ $_SESSION['can_post'] = true;
         <form action="confirm.php" method="post" onsubmit="return validateForm();">
             <input type="hidden" name="employee_id" value="<?php echo htmlspecialchars($employee_id, ENT_QUOTES, 'UTF-8'); ?>">
             <input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode, ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="hidden" name="return_to" value="<?php echo htmlspecialchars($return_to, ENT_QUOTES, 'UTF-8'); ?>">
 
             <div class="field">
                 <label class="label">意見本文</label>

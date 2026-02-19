@@ -11,6 +11,7 @@ $employee_id = $_POST['employee_id'];
 $mode = $_POST['mode'];
 $content = $_POST['content'];
 $tag = $_POST['tag'];
+$return_to = isset($_POST['return_to']) ? $_POST['return_to'] : ('http://' . $_SERVER['HTTP_HOST'] . '/login/');
 
 $valid_modes = ['anonymous', 'semi', 'signed'];
 if (!in_array($mode, $valid_modes, true)) {
@@ -55,6 +56,6 @@ if ($result === false) {
 }
 
 $_SESSION['can_post'] = false;
-header('Location: success.php');
+header('Location: success.php?return_to=' . urlencode($return_to));
 exit;
 ?>

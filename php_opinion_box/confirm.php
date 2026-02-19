@@ -5,6 +5,7 @@ if (!isset($_POST['employee_id'], $_POST['mode'], $_POST['content'], $_POST['tag
 }
 $employee_id = $_POST['employee_id'];
 $mode = $_POST['mode'];
+$return_to = isset($_POST['return_to']) ? $_POST['return_to'] : ('http://' . $_SERVER['HTTP_HOST'] . '/login/');
 $content_raw = $_POST['content'];
 $tag = $_POST['tag'];
 
@@ -49,6 +50,7 @@ $mode_label = [
             <form method="post" action="form.php">
                 <input type="hidden" name="employee_id" value="<?php echo htmlspecialchars($employee_id, ENT_QUOTES, 'UTF-8'); ?>">
                 <input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode, ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="return_to" value="<?php echo htmlspecialchars($return_to, ENT_QUOTES, 'UTF-8'); ?>">
                 <input type="hidden" name="content" value="<?php echo htmlspecialchars($content_raw, ENT_QUOTES, 'UTF-8'); ?>">
                 <input type="hidden" name="tag" value="<?php echo htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?>">
                 <button class="btn-outline" type="submit">戻る</button>
@@ -57,6 +59,7 @@ $mode_label = [
             <form method="post" action="submit.php">
                 <input type="hidden" name="employee_id" value="<?php echo htmlspecialchars($employee_id, ENT_QUOTES, 'UTF-8'); ?>">
                 <input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode, ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="return_to" value="<?php echo htmlspecialchars($return_to, ENT_QUOTES, 'UTF-8'); ?>">
                 <input type="hidden" name="content" value="<?php echo htmlspecialchars($content, ENT_QUOTES, 'UTF-8'); ?>">
                 <input type="hidden" name="tag" value="<?php echo htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?>">
                 <button class="btn" type="submit">送信</button>
